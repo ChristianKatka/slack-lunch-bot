@@ -1,0 +1,17 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# esbuild directories
+.esbuild
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Mac OSX Finder files.
+**/.DS_Store
+.DS_Store

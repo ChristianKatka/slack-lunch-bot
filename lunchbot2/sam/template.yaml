@@ -1,0 +1,48 @@
+Transform: AWS::Serverless-2016-10-31
+Description: Lunch bot API
+
+Resources:
+  ApiGatewayHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      Auth:
+      CorsConfiguration:
+        AllowOrigins:
+          - "*"
+        AllowHeaders:
+          - "*"
+        AllowMethods:
+          - GET
+        MaxAge: 60
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 10
+        ThrottlingRateLimit: 10
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      Path: "/"
+
+  API:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../build
+      Handler: index.handler
+      MemorySize: 256
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: nodejs14.x
+      Timeout: 10
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ApiGatewayHttpApi
+            Path: $default
+            PayloadFormatVersion: "1.0"
+            Method: GET
