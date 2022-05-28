@@ -6,8 +6,6 @@ const link = 'https://www.lounaat.info/lounas/bella-roma/jyvaskyla';
 export const getLunchMenu = async () => {
   const res = await fetch(link);
   const body = await res.text();
-
-  // käännettään json
   const data = parse(body);
   console.log(data);
 

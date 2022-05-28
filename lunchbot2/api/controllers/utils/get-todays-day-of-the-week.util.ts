@@ -2,9 +2,9 @@ export const getTodaysDayOfTheWeek = (): number | undefined => {
   const date = new Date();
   const dayOfTheWeek = date.getDay();
 
-  const isWeekday = dayOfTheWeek < 1 || dayOfTheWeek > 5;
+  const isWeekend = dayOfTheWeek < 1 || dayOfTheWeek > 5;
 
-  if (isWeekday) {
+  if (isWeekend) {
     return undefined;
   }
   return dayOfTheWeek;

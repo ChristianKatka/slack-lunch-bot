@@ -29,7 +29,7 @@ Resources:
   API:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://slack-lunch-bot-api-lambda-bucket/3e6d2b377e3a2e44b87f66dca592ffd1
+      CodeUri: s3://slack-lunch-bot-api-lambda-bucket/cede7f64bf4d73a9d1ba66f69b671b40
       Handler: index.handler
       MemorySize: 256
       Role:

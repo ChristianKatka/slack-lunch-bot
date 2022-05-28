@@ -1,30 +1,41 @@
 import { LounaatInfo } from '../models/lounaat-info.model';
 
 export const parseDataOutOfTheWebsiteLounaatInfo = (
-  websiteData: any
+  websiteData: any,
+  weekDay: number | undefined
 ): LounaatInfo | undefined => {
   const menu = websiteData.querySelector('#menu');
-  if (!menu) return;
+  if (!menu || !weekDay) return;
 
-  const firstDayOfTheWeek = menu.childNodes[1];
-  const firstDayOfTheWeekHeading = (
-    menu.childNodes[1].childNodes[0].childNodes[0].childNodes[0] as any
-  )._rawText;
+  const today = menu.childNodes[weekDay];
 
-  const firstDayOfTheWeekMenuBody = firstDayOfTheWeek.childNodes[1];
-  const firstDayOfTheWeekMenu = (
-    firstDayOfTheWeekMenuBody.childNodes[0].childNodes[0].childNodes[0]
-      .childNodes[0] as any
-  )._rawText;
+  const todayHeading = (today.childNodes[0].childNodes[0].childNodes[0] as any)
+    ?._rawText
+    ? (today.childNodes[0].childNodes[0].childNodes[0] as any)?._rawText
+    : 'Otsikon haku epäonnistui';
 
-  const firstDayOfTheWeekMenuPrice = (
-    firstDayOfTheWeekMenuBody.childNodes[0].childNodes[0].childNodes[0]
-      .childNodes[4] as any
-  )._rawText;
+  const todayMenuBody = today.childNodes[1];
+  const todayMenu = (
+    todayMenuBody.childNodes[0].childNodes[0].childNodes[0].childNodes[0] as any
+  )?._rawText
+    ? (
+        todayMenuBody.childNodes[0].childNodes[0].childNodes[0]
+          .childNodes[0] as any
+      )?._rawText
+    : 'Ruuan haku epäonnistui';
+
+  const todayMenuPrice = (
+    todayMenuBody.childNodes[0].childNodes[0].childNodes[0].childNodes[4] as any
+  )?._rawText
+    ? (
+        todayMenuBody.childNodes[0].childNodes[0].childNodes[0]
+          .childNodes[4] as any
+      )?._rawText
+    : 'Ruuan hinnan haku epäonnistui';
 
   return {
-    heading: String(firstDayOfTheWeekHeading).trim(),
-    food: String(firstDayOfTheWeekMenu).trim(),
-    price: String(firstDayOfTheWeekMenuPrice).trim(),
+    heading: String(todayHeading).trim(),
+    food: String(todayMenu).trim(),
+    price: String(todayMenuPrice).trim(),
   };
 };
