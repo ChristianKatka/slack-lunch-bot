@@ -1,18 +1,17 @@
 Transform: AWS::Serverless-2016-10-31
 Description: Lunch bot API
-
 Resources:
   ApiGatewayHttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
-      Auth:
+      Auth: null
       CorsConfiguration:
         AllowOrigins:
-          - "*"
+        - '*'
         AllowHeaders:
-          - "*"
+        - '*'
         AllowMethods:
-          - GET
+        - GET
         MaxAge: 60
       DefaultRouteSettings:
         ThrottlingBurstLimit: 10
@@ -21,27 +20,30 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement:
           Effect: Allow
           Principal:
             Service: lambda.amazonaws.com
           Action: sts:AssumeRole
-
   API:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ../build
+      CodeUri: s3://slack-lunch-bot-api-lambda-bucket/c937662bfa6ea50d68dfbe6555b3f4df
       Handler: index.handler
       MemorySize: 256
-      Role: !GetAtt LambdaExecutionRole.Arn
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
       Runtime: nodejs14.x
       Timeout: 10
       Events:
         ApiEvent:
           Type: HttpApi
           Properties:
-            ApiId: !Ref ApiGatewayHttpApi
+            ApiId:
+              Ref: ApiGatewayHttpApi
             Path: $default
-            PayloadFormatVersion: "1.0"
+            PayloadFormatVersion: '1.0'
             Method: ANY

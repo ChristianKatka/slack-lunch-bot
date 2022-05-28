@@ -4,7 +4,7 @@
   "config": {
     "region": "eu-west-1",
     "lunchBots3BucketStackName": "slack-lunch-bot-s3-api-lambda-bucket",
-    "lunchBotBucketName": "slack-lunch-bot-api-lambda-bucket",    
+    "lunchBotBucketName": "slack-lunch-bot-api-lambda-bucket",
     "lunchBotLambdaStackName": "slack-lunch-bot-API-lambda",
     "bucketTemplatePath": "./infra/slack-lunch-bot-s3-bucket-API-lambda.yaml"
   },
@@ -20,13 +20,20 @@
   "private": true,
   "dependencies": {
     "@koa/cors": "^3.1.0",
+    "@types/jsdom": "^16.2.14",
     "@types/koa-logger": "^3.1.2",
     "aws-serverless-express": "^3.4.0",
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.11",
+    "cross-fetch": "^3.1.5",
+    "got": "^12.1.0",
+    "jsdom": "^19.0.0",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-json": "^2.0.2",
     "koa-logger": "^3.2.1",
     "koa-router": "^10.1.1",
+    "node-html-parser": "^5.3.3",
     "nodemon": "^2.0.15"
   },
   "devDependencies": {
