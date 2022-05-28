@@ -18,7 +18,7 @@ app.use(bodyParser());
 app.use(cors());
 
 const router = new Router();
-router.get('/lunch', getLunchMenu);
+router.post('/lunch', getLunchMenu);
 
 app.use(router.routes()).use(router.allowedMethods());
 

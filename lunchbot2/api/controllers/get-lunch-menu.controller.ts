@@ -1,38 +1,37 @@
-import fetch from 'cross-fetch';
 import { Context, Next } from 'koa';
-import { parse } from 'node-html-parser';
+import { LINKS_LOUNAAT_INFO } from './constants';
+import { getHTMLforGivenWebsite } from './services/get-html-of-given-website.service';
+import { slackResponse } from './services/slack-response.service';
+import { getTodaysDayOfTheWeek } from './utils/get-todays-day-of-the-week.util';
+import { parseDataOutOfTheWebsiteLounaatInfo } from './utils/parse-data-out-of-the-website-lounaat-info.util';
 
 export const getLunchMenu = async (ctx: Context, next: Next) => {
-  const link = 'https://www.lounaat.info/lounas/hox-city/jyvaskyla';
+  LINKS_LOUNAAT_INFO;
+  const randomRestaurantLink =
+    LINKS_LOUNAAT_INFO[Math.floor(Math.random() * LINKS_LOUNAAT_INFO.length)];
 
-  const res = await fetch(link);
-  const body = await res.text();
-  const data = parse(body);
-  const menu = data.querySelector('#menu');
-  if (!menu) return;
+  const websiteData = await getHTMLforGivenWebsite(
+    'https://www.lounaat.info/lounas/hox-city/jyvaskyla'
+  );
+  const weekDay = getTodaysDayOfTheWeek();
+  if (!weekDay) {
+    ctx.response.body = weekEndSlackResponse() {
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'plain_text',
+            text: 'Ei tänään oo työpäivä... vai onks mun kello sekasin?',
+          },
+        },
+      ],
+    };
+  }
 
-  const firstDayOfTheWeek = menu.childNodes[1];
-  const firstDayOfTheWeekHeading = (
-    menu.childNodes[1].childNodes[0].childNodes[0].childNodes[0] as any
-  )._rawText;
+  const parsedLunchData = parseDataOutOfTheWebsiteLounaatInfo(websiteData);
+  if (!parsedLunchData) return;
 
-  const firstDayOfTheWeekMenuBody = firstDayOfTheWeek.childNodes[1];
-  const firstDayOfTheWeekMenu = (
-    firstDayOfTheWeekMenuBody.childNodes[0].childNodes[0].childNodes[0]
-      .childNodes[0] as any
-  )._rawText;
-
-  const firstDayOfTheWeekMenuPrice = (
-    firstDayOfTheWeekMenuBody.childNodes[0].childNodes[0].childNodes[0]
-      .childNodes[4] as any
-  )._rawText;
-
-  console.log(firstDayOfTheWeekHeading);
-  console.log(firstDayOfTheWeekMenu);
-  console.log(firstDayOfTheWeekMenuPrice);
-
-  ctx.response.status = 200;
-  ctx.response.body = { key: 'menu' };
+  slackResponse(parsedLunchData);
 
   await next();
 };

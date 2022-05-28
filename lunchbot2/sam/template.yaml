@@ -12,11 +12,11 @@ Resources:
         AllowHeaders:
           - "*"
         AllowMethods:
-          - GET
+          - POST
         MaxAge: 60
       DefaultRouteSettings:
-        ThrottlingBurstLimit: 10
-        ThrottlingRateLimit: 10
+        ThrottlingBurstLimit: 5
+        ThrottlingRateLimit: 5
   LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:

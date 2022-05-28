@@ -11,11 +11,11 @@ Resources:
         AllowHeaders:
         - '*'
         AllowMethods:
-        - GET
+        - POST
         MaxAge: 60
       DefaultRouteSettings:
-        ThrottlingBurstLimit: 10
-        ThrottlingRateLimit: 10
+        ThrottlingBurstLimit: 5
+        ThrottlingRateLimit: 5
   LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -29,7 +29,7 @@ Resources:
   API:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://slack-lunch-bot-api-lambda-bucket/c937662bfa6ea50d68dfbe6555b3f4df
+      CodeUri: s3://slack-lunch-bot-api-lambda-bucket/3e6d2b377e3a2e44b87f66dca592ffd1
       Handler: index.handler
       MemorySize: 256
       Role:
